@@ -41,28 +41,38 @@ public class MainActivity extends AppCompatActivity {
             binding.textView.setText(memo);
         }));
 
-        binding.editTextText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence,int i, int i1, int i2){
-                //テキストが更新される直前に呼ばれる
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
-                //文字を1つ入力されたときに呼ばれる
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable){
-                //テキストが更新された後に呼ばれる
-                binding.text.setText(editable.toString());  //editableに変更後の文字が渡される
-            }
-        });
+//        binding.editTextText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence,int i, int i1, int i2){
+//                //テキストが更新される直前に呼ばれる
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
+//                //文字を1つ入力されたときに呼ばれる
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable){
+//                //テキストが更新された後に呼ばれる
+//                binding.text.setText(editable.toString());  //editableに変更後の文字が渡される
+//            }
+//        });
 
         prefDataStore = PrefDataStore.getInstance(this);
         binding.saveButton.setOnClickListener(view -> {
             var text = binding.editTextText.getText().toString();
             prefDataStore.setString("name",text);
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        prefDataStore.getString("name")
+                .ifPresent(name -> binding.text.setText(name));
     }
 }
